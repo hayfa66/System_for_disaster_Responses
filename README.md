@@ -32,10 +32,10 @@ and shows a certain information about the dataset provided
 
 App
 
--templets.
-  -go.html : html code.
-  -master.html : html code.
--run.py : code to run the app.
+- templets
+  - go.html : html code.
+  - master.html : html code.
+- run.py : code to run the app.
 
 Data
 
@@ -46,15 +46,17 @@ Data
 - DisasterResponse.db : the processed data.
 
 Models
+
 - classifier.pkl : the model.
 - train_classifier.py : file to save the classifier model.
 - ML Pipeline prepration : guide to write train_classifier.py file.
 
-Screenshot Web1 .png
+Screenshot Web1 .png : a screenshot of the web
 
-Screenshot Web2 .png 
+Screenshot Web2 .png : a screenshot of the web
 
 -----
 
 ## Licensing, Authors, Acknowledgements
-thanks to udacity for providing the complementry codes
+
+thanks to udacity for providing the complementry codes .
