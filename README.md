@@ -1,6 +1,6 @@
 # System for Disaster Responses
 
-## Installation
+## 1. Installation
 
 it works on python3
 , and needs this libraries
@@ -9,13 +9,13 @@ it works on python3
 - plotly
 - flask
 - nltk
-- sklearn " version must be 1.1.2 and newer "
+- sklearn (=> 1.1.2)
   - it has some new features like ColumnTransformer
 - sqlalchemy
 - re
 - pickle
 --------------
-## Project Motivation
+## 2. Project Motivation
 
 this is a project for a udacity course it is to make an app on web that can predict a message category regarding the disaster field
 and shows a certain information about the dataset provided
@@ -28,7 +28,21 @@ and shows a certain information about the dataset provided
 
 ---------
 
-## File Descriptions
+## 3. How to interact with the project
+
+You need to install all the libraries and run the files
+In the terminal :-
+
+- process_data.py
+- train_classifier.py
+- run.py
+
+Respectively
+
+And click on the url that will be given to you in the terminal.
+
+---------
+## 4.File Descriptions
 
 App
 
@@ -47,7 +61,6 @@ Data
 
 Models
 
-- classifier.pkl : the model.
 - train_classifier.py : file to save the classifier model.
 - ML Pipeline prepration : guide to write train_classifier.py file.
 
@@ -57,6 +70,6 @@ Screenshot Web2 .png : a screenshot of the web
 
 -----
 
-## Licensing, Authors, Acknowledgements
+## 5. Licensing, Authors, Acknowledgements
 
 thanks to udacity for providing the complementry codes .
