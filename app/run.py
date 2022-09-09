@@ -141,7 +141,8 @@ def index():
             'data': [
                 Bar(
                     x=genre_names,
-                    y=genre_counts
+                    y=genre_counts,
+                    marker_color= '#E80F88'
                 )
             ],
 
