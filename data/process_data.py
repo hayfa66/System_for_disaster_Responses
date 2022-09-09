@@ -4,30 +4,49 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
+    # load data
     messages = pd.read_csv(messages_filepath,dtype=str)
     categories = pd.read_csv(categories_filepath,dtype=str)
     return pd.concat([messages,categories],axis=1)
 
 
 def clean_data(df):
+    '''
+    Function to clean the data
+    Input:
+    df : dataframe , data to be cleaned
+    Output :
+    df : dataframe , cleaned data
+    '''
+    # split the categories into dataframe
+    # expand = True meaning it will divide the data
+    # to 36 column
     categories = df.categories.str.split(pat=";", expand=True)
+    # split the binary values .
     n = list(categories.iloc[0,:].str.split(pat="-",expand=True)[0])
     categories.columns = n
+    # loop to assign every value to its correspanding category
     for column in categories:
         categories[column] = categories[column].str[-1]
         categories[column] = categories[column].astype(int)
+    # delete the uncleaned category to assign new columns
     df = df.drop(["categories"],axis=1)
     df = pd.concat([df,categories],axis=1)
+   
+    # delete duplicated columnsand rows
     df=df.iloc[:,~df.columns.duplicated()]
     df=df.iloc[list(~df.duplicated()),:]
+    # convert the value 2 to 1
     df.loc[df['related']>1,'related'] = 1
     df = df.iloc[list(~df.duplicated()),:]
+    # drom the rows that has all values 1 or 0
     df.drop(df[df.iloc[:,4:].mean(axis=1)==0].index,axis=0,inplace=True)  
     df.drop(df[df.iloc[:,4:].mean(axis=1)==1].index,axis=0,inplace=True)
 
     return df
 
 def save_data(df, database_filename):
+    # save the data
     engine = create_engine("sqlite:///"+database_filename)
     df.to_sql('message', engine, index=False, if_exists='replace')
 
