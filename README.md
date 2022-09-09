@@ -23,26 +23,37 @@ and shows a certain information about the dataset provided
 # the interface of the web app
 ![Screenshot Web1 ](https://user-images.githubusercontent.com/110268610/189388738-30018296-a0ff-44e7-befb-912bbb46c43d.png)
 
-# The interface for Classifiying a message
+# The interface for Classifying a message
 ![Screenshot Web2  ](https://user-images.githubusercontent.com/110268610/189388509-bfd1883a-f789-4a99-a59b-8086acf6ed9d.png)
 
 ---------
 
 ## File Descriptions
 
-App ...
--templets
-  -go.html : html code
-  -master.html : html code
--run.py : code to run the app
-Data ...
+App
 
-process_data.py
-- 
+-templets.
+  -go.html : html code.
+  -master.html : html code.
+-run.py : code to run the app.
 
--run.py
+Data
+
+- ETL Pipeline prepration.ipynb : notebook that led me to write the proccess data file.
+- disaster_messages.csv : raw data contains messages.
+- disaster_categories.csv : raw data contains categories.
+- process_data.py : file to process the uncleaned data.
+- DisasterResponse.db : the processed data.
+
+Models
+- classifier.pkl : the model.
+- train_classifier.py : file to save the classifier model.
+- ML Pipeline prepration : guide to write train_classifier.py file.
+
 Screenshot Web1 .png
+
 Screenshot Web2 .png 
+
 -----
 
 ## Licensing, Authors, Acknowledgements
