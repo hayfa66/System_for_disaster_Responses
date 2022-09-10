@@ -4,19 +4,36 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
-    # load data
+    '''
+    Load data
+    Load data from csv files and merge to single pandas dataframe
+
+    Input:
+    messages_filepath  : filepath to message csv file
+    categories_filepath : filepath to categories csv file
+
+    Output :
+    df : dataframe , merged dataframe 
+
+    '''
+
     messages = pd.read_csv(messages_filepath,dtype=str)
     categories = pd.read_csv(categories_filepath,dtype=str)
+
     return pd.concat([messages,categories],axis=1)
 
 
 def clean_data(df):
     '''
+    
     Function to clean the data
     Input:
+
     df : dataframe , data to be cleaned
     Output :
+
     df : dataframe , cleaned data
+
     '''
     # split the categories into dataframe
     # expand = True meaning it will divide the data
@@ -25,10 +42,12 @@ def clean_data(df):
     # split the binary values .
     n = list(categories.iloc[0,:].str.split(pat="-",expand=True)[0])
     categories.columns = n
+
     # loop to assign every value to its correspanding category
     for column in categories:
         categories[column] = categories[column].str[-1]
         categories[column] = categories[column].astype(int)
+
     # delete the uncleaned category to assign new columns
     df = df.drop(["categories"],axis=1)
     df = pd.concat([df,categories],axis=1)
@@ -46,7 +65,18 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
-    # save the data
+    '''
+    Save data
+    Save dataframe to a sql database
+
+    Input:
+    dd  : dataframe to be saved
+    database_filename : string name of the new database
+
+    Output :
+    None
+
+    '''
     engine = create_engine("sqlite:///"+database_filename)
     df.to_sql('message', engine, index=False, if_exists='replace')
 
