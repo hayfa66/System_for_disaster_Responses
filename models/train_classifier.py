@@ -24,10 +24,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.compose import ColumnTransformer
 
+# SUPPORT X_transform function 
 url_re = '[a-zA-Z]*http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+[a-zA-Z]*'
 email_re = '[a-zA-Z_0-9-+]+@(.?[a-zA-Z_0-9-]+\.[a-zA-Z_0-9-]+)+$'
 url = re.compile(url_re)
 eml = re.compile(email_re)
+# SUPPORT Toknize function 
 stop = stopwords.words("english")
 stop.append('us')
 stop.append('pass')
@@ -41,7 +43,25 @@ stop.remove('here')
 
 
 def X_Transform(X):
+    '''
     
+    transform the feature column to 4 features columns
+    
+    inputs:
+    
+    X : one column of the message
+       
+    outputs:
+
+    2d array of containing and 4 columns of :-
+
+    message : message text without numbers , emails and url
+    number : 0 or 1 if the text has a number
+    email : 0 or 1 if the text has an email
+    url : 0 or 1 if the text has an url
+
+    
+    '''
     Array = np.zeros((len(X),4),dtype=object)
     for i,x in enumerate(X) :
         Array[i,0] = x
@@ -61,7 +81,20 @@ def X_Transform(X):
     return Array       
 
 def load_data(database_filepath):
+    '''
+    Load data
+    Load data from sql database and split it into features and categories and
+    list of category names
 
+    Input:
+    database_filepath : filepath to where the database is
+
+    Output :
+    X : messages
+    Y : categories values
+    category_names : list of category names
+
+    '''
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql_table('message', engine)
 
@@ -72,6 +105,19 @@ def load_data(database_filepath):
     return X , Y , category_names
 
 def tokenize(text):
+    '''
+    
+    applying NLP process on the text
+    
+    inputs:
+    
+    text: String
+       
+    outputs:
+
+    list of cleaned text
+    
+    '''
     text = text.lower()
     text = re.sub(r"[^a-z]+"," ",text)
     
@@ -97,7 +143,19 @@ def tokenize(text):
 
 
 def build_model():
+    '''
+    
+    Bulding a cv grid search
+    
+    inputs:
 
+    None
+       
+    outputs:
+
+    a cv grid search
+    
+    '''
     ct = ColumnTransformer( 
         [('CatTr', 
         Pipeline([
@@ -120,7 +178,19 @@ def build_model():
     return cv
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    
+    Print the model Properties
+    
+    inputs:
+    
+    None
+       
+    outputs:
 
+    None
+    
+    '''
     Y_pred = model.predict(X_test)
 
     for i in range(len(category_names)):
@@ -128,17 +198,29 @@ def evaluate_model(model, X_test, Y_test, category_names):
         Y_pred[:,i]))
     
     accuracy=(Y_pred == Y_test).mean()
-
     print("Accuracy :-\n", accuracy.mean()*100 ,"%\n------")
-
     print(model.best_params_)
     
+    
 def save_model(model, model_filepath):
+    '''
+    Save Model
+    Save The trained model as a pkl file
+
+    Input:
+    model : model to be saved
+    model_filepath : string a filepath to where the model would be saved
+
+    Output :
+    None
+
+    '''
     pickle.dump(model.best_estimator_, open(model_filepath, 'wb'))
 
 
 def main():
     if len(sys.argv) == 3:
+
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
